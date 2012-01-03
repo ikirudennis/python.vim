@@ -45,44 +45,52 @@ if exists("b:loaded_py_ftplugin")
 endif
 let b:loaded_py_ftplugin = 1
 
-map  ]t   :PBoB<CR>
-vmap ]t   :<C-U>PBOB<CR>m'gv``
-map  ]e   :PEoB<CR>
-vmap ]e   :<C-U>PEoB<CR>m'gv``
+" Previously, this plugin was designed to use ']' as the leader to all the
+" commands here.  ']c' is a built-in vim shortcut to jump to the next diff in
+" diff mode, so setting a localleader seems like a better choice here.  Add
+" the following line to .vimrc and the original functionality is back.  You
+" may also want to explore a better choice for localleader though.
+"let maplocalleader = ']'
 
-map  ]v   ]tV]e
-map  ]<   ]tV]e<
-vmap ]<   <
-map  ]>   ]tV]e>
-vmap ]>   >
+map  <localleader>t   :PBoB<CR>
+vmap <localleader>t   :<C-U>PBOB<CR>m'gv``
+map  <localleader>e   :PEoB<CR>
+vmap <localleader>e   :<C-U>PEoB<CR>m'gv``
 
-map  ]#   :call PythonCommentSelection()<CR>
-vmap ]#   :call PythonCommentSelection()<CR>
-map  ]u   :call PythonUncommentSelection()<CR>
-vmap ]u   :call PythonUncommentSelection()<CR>
+map  <localleader>v   :exe "normal ".PythonBoB(line('.'), -1, 1)."G"<CR>V:exe "normal ".PythonBoB(line('.'), 1, 1)."G"<CR>
+map  <localleader><   :PBoB<CR>V:PEoB<CR><
+vmap <localleader><   <
+map  <localleader>>   :PBoB<CR>V:PEoB<CR>>
+vmap <localleader>>   >
 
-map  ]c   :call PythonSelectObject("class")<CR>
-map  ]d   :call PythonSelectObject("function")<CR>
+map  <localleader>#   :call PythonCommentSelection()<CR>
+vmap <localleader>#   :call PythonCommentSelection()<CR>
+map  <localleader>u   :call PythonUncommentSelection()<CR>
+vmap <localleader>u   :call PythonUncommentSelection()<CR>
 
-map  ]<up>    :call PythonNextLine(-1)<CR>
-map  ]<down>  :call PythonNextLine(1)<CR>
+" ]c is a built-in shortcut to jump to the next diff in diff mode
+map  <localleader>c   :call PythonSelectObject("class")<CR>
+map  <localleader>d   :call PythonSelectObject("function")<CR>
+
+map  <localleader><up>    :call PythonNextLine(-1)<CR>
+map  <localleader><down>  :call PythonNextLine(1)<CR>
 " You may prefer use <s-up> and <s-down>... :-)
 
 " jump to previous class
-map  ]J   :call PythonDec("class", -1)<CR>
-vmap ]J   :call PythonDec("class", -1)<CR>
+map  <localleader>J   :call PythonDec("class", -1)<CR>
+vmap <localleader>J   :call PythonDec("class", -1)<CR>
 
 " jump to next class
-map  ]j   :call PythonDec("class", 1)<CR>
-vmap ]j   :call PythonDec("class", 1)<CR>
+map  <localleader>j   :call PythonDec("class", 1)<CR>
+vmap <localleader>j   :call PythonDec("class", 1)<CR>
 
 " jump to previous function
-map  ]F   :call PythonDec("function", -1)<CR>
-vmap ]F   :call PythonDec("function", -1)<CR>
+map  <localleader>F   :call PythonDec("function", -1)<CR>
+vmap <localleader>F   :call PythonDec("function", -1)<CR>
 
 " jump to next function
-map  ]f   :call PythonDec("function", 1)<CR>
-vmap ]f   :call PythonDec("function", 1)<CR>
+map  <localleader>f   :call PythonDec("function", 1)<CR>
+vmap <localleader>f   :call PythonDec("function", 1)<CR>
 
 
 
@@ -90,7 +98,7 @@ vmap ]f   :call PythonDec("function", 1)<CR>
 nmenu <silent> &Python.Update\ IM-Python\ Menu 
     \:call UpdateMenu()<CR>
 nmenu &Python.-Sep1- :
-nmenu <silent> &Python.Beginning\ of\ Block<Tab>[t 
+nmenu <silent> &Python.Beginning\ of\ Block<Tab>]t 
     \]t
 nmenu <silent> &Python.End\ of\ Block<Tab>]e 
     \]e
